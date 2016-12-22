@@ -1,7 +1,5 @@
 ### Vim config for web development
 
-<img src="http://i.imgur.com/ElOEHZ3.png"/>
-
 ### Features
 * Only one file, you don't need to run any installation script.
 * Integration with Git.
@@ -24,7 +22,10 @@ Action | Hotkey
 Recent Files List                                         | `leader m`
 FuzzyFinder fo files                                      | `leader ;`
 Ack/Grep                                                  | `leader /`
+Ag                                                        | `\`
+fzf                                                       | `ctrl+p`
 Show current file in NERDtree in a split                  | `leader f`
+Show NERDtree                                             | `ctrl+\`
 **▶ JShint/CSSlint navigation**                           |
 Show error window                                         | `leader ll`
 Go to the next line with error/warning                    | `]`
@@ -56,27 +57,6 @@ Move between splits                                       | `leader w`
 ESC                                                       | `j+k (simultaneously)`
 Quick tab navigation                                      | `leader '`
 
-### Color scheme
-
-I use color scheme “Solarized”, the light version is enabled by default.
-If you want the dark one, you have to change the following lines:
-```vim
-" Setting up light color scheme
-set background=light
-
-" set highlighting for colorcolumn
-highlight ColorColumn ctermbg=lightGrey
-```
-
-to those:
-```vim
-" Setting up light color scheme
-set background=dark
-
-" set highlighting for colorcolumn
-highlight ColorColumn ctermbg=darkGrey
-```
-
 ### Full features list
 #### Easy installation
 You just need to place `.vimrc` in your home directory, and that's all. All
@@ -96,10 +76,7 @@ lower/upper-case in the search pattern, it'll be case-sensitive.
 #### Quick plugin install &mdash; [Neobundle](https://github.com/Shougo/neobundle.vim)
 It's a bundler, which helps to install other bundles. It's quite smart and works better then
 vundle.
-#### Color Scheme &mdash; [Solarized](https://github.com/altercation/vim-colors-solarized)
-A popular light/dark color scheme.
 
-![Screen](https://raw.githubusercontent.com/altercation/solarized/master/img/solarized-vim.png)
 #### Snippets &mdash; [Neosnippet](https://github.com/Shougo/neosnippet.vim) & [vim-snippets](https://github.com/honza/vim-snippets)
 Neosnippet is a snippet engine itself, and Vim-snippets &mdash; it’s default snippets collection.
 
@@ -118,7 +95,7 @@ Provides features like:
 This plugin integrates many spellchekers and syntax checkers and shows
 you errors when saving or opening a file.
 
-By default this config use npm-packets [jshint](http://www.jshint.com/) and [css-lint](http://csslint.net/) to check js and css files on the fly.
+By default this config use npm-packets [eslint](http://www.eslint.org/) and [css-lint](http://csslint.net/) to check js and css files on the fly.
 
 #### Advanced file-system navigation &mdash; [NERDTree](https://github.com/scrooloose/nerdtree)
 Imroved file-system navigation. Looks pretty much like the standard one but with some cool features like tree navigation, bookmarks, and some more.
@@ -154,7 +131,7 @@ Provides advanced javascript features like Smart variable rename, Find variable 
 
 To install just clone the repo, and place symlink to .vimrc in your home directory. E.g.:
 ```bash
- git clone https://github.com/L0stSoul/vim-config.git && ln -s ~/vim-config/.vimrc ~/
+ git clone https://github.com/fugazister/vim-config.git && ln -s ~/vim-config/.vimrc ~/
 ```
 [NPM](http://en.wikipedia.org/wiki/Npm_(software)) is required for some features.
 

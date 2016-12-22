@@ -38,6 +38,16 @@ if system('uname -o') =~ '^GNU/'
     let g:make = 'make'
 endif
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+
+nnoremap K :grep! --word-regexp "<C-R><C-W>"<CR>:cw<CR>
+nnoremap \ :Ag<SPACE>
+
+
 "--------------------------------------------------
 " Bundles
 
@@ -55,6 +65,9 @@ NeoBundle 'Shougo/vimproc', {
 
 " Some support functions used by delimitmate, and snipmate
 NeoBundle 'vim-scripts/tlib'
+
+NeoBundle 'junegunn/fzf'
+NeoBundle 'junegunn/fzf.vim'
 
 " Improve bookmarks in vim
 " Allow word for bookmark marks, and nice quickfix window with bookmark list
@@ -76,7 +89,7 @@ NeoBundle 'vim-scripts/DirDiff.vim'
 
 " Colorscheme solarazied for vim
 NeoBundle 'altercation/vim-colors-solarized'
-
+NeoBundle 'crusoexia/vim-monokai'
 " Allow autoclose paired characters like [,] or (,),
 " and add smart cursor positioning inside it,
 NeoBundle 'Raimondi/delimitMate'
@@ -86,11 +99,11 @@ NeoBundle 'Raimondi/delimitMate'
 " I just enable it, with default config,
 " many false positive but still usefull
 NeoBundle 'scrooloose/syntastic'
-" Install jshint and csslint for syntastic
-" Path to jshint if it not installed, then use local installation
+" Install eslint and csslint for syntastic
+" Path to eslint if it not installed, then use local installation
 if isNpmInstalled
-    if !executable(expand(s:defaultNodeModules . 'jshint'))
-        silent ! echo 'Installing jshint' && npm --prefix ~/.vim/ install jshint
+    if !executable(expand(s:defaultNodeModules . 'eslint'))
+        silent ! echo 'Installing eslint' && npm --prefix ~/.vim/ install eslint
     endif
     if !executable(expand(s:defaultNodeModules . 'csslint'))
         silent ! echo 'Installing csslint' && npm --prefix ~/.vim/ install csslint
@@ -101,6 +114,7 @@ endif
 " Allow modification of dir, and may other things
 " Must have
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'Xuyuanp/nerdtree-git-plugin'
 
 " Provide smart autocomplete results for javascript, and some usefull commands
 if has("python") && isNpmInstalled
@@ -122,6 +136,9 @@ NeoBundle 'tomtom/tcomment_vim'
 " But with my workflow, i really rarely use it
 " just Gdiff and Gblame sometimes
 NeoBundle 'tpope/vim-fugitive'
+
+" Git gutter
+NeoBundle 'airblade/vim-gitgutter'
 
 " Fix-up dot command behavior
 " it's kind of service plugin
@@ -191,6 +208,13 @@ NeoBundle 'Shougo/neomru.vim'
 " Plugin for chord mappings
 NeoBundle 'kana/vim-arpeggio'
 
+" Slim template engine
+NeoBundle 'slim-template/vim-slim'
+
+NeoBundle 'jistr/vim-nerdtree-tabs'
+
+map <C-\> <plug>NERDTreeTabsToggle<CR>
+
 " JShint :)
 " But not necessary with syntastics
 " NeoBundle 'walm/jshint.vim'
@@ -250,13 +274,13 @@ let g:unite_source_grep_default_opts = '-iRHns'
 let g:unite_source_rec_max_cache_files = 99999
 
 " If ack exists use it instead of grep
-if executable('ack-grep')
-    " Use ack-grep
-    let g:unite_source_grep_command = 'ack-grep'
-    " Set up ack options
-    let g:unite_source_grep_default_opts = '--no-heading --no-color -a -H'
-    let g:unite_source_grep_recursive_opt = ''
-endif
+" if executable('ack-grep')
+"     " Use ack-grep
+"     let g:unite_source_grep_command = 'ack-grep'
+"     " Set up ack options
+"     let g:unite_source_grep_default_opts = '--no-heading --no-color -a -H'
+"     let g:unite_source_grep_recursive_opt = ''
+" endif
 
 " Hotkey for open window with most recent files
 nnoremap <silent><leader>m :<C-u>Unite file_mru <CR>
@@ -271,10 +295,9 @@ nnoremap <silent><leader>' :Unite -quick-match -auto-quit tab<CR>
 nnoremap <silent><leader>; :Unite file_rec/async:! -buffer-name=files -start-insert<CR>
 
 " Unite-grep
-nnoremap <silent><leader>/ :Unite grep:. -no-start-insert -no-quit -keep-focus -wrap<CR>
+" nnoremap <silent><leader>/ :Unite grep:. -no-start-insert -no-quit -keep-focus -wrap<CR>
 
-
-
+nnoremap <silent><C-p> :Files<CR>
 "-------------------------
 " NERDTree
 
@@ -308,7 +331,7 @@ function! s:FindSyntasticExecPath(toolName)
 endfunction
 
 " setting up jshint csslint and jscs if available
-let g:syntastic_javascript_jshint_exec = s:FindSyntasticExecPath('jshint')
+let g:syntastic_javascript_eslint_exec = s:FindSyntasticExecPath('eslint')
 let g:syntastic_javascript_jscs_exec = s:FindSyntasticExecPath('jscs')
 let g:syntastic_css_csslint_exec= s:FindSyntasticExecPath('csslint')
 
@@ -322,7 +345,7 @@ let g:syntastic_always_populate_loc_list = 1
 " check json files with jshint
 let g:syntastic_filetype_map = { "json": "javascript", }
 
-let g:syntastic_javascript_checkers = ["jshint", "jscs"]
+let g:syntastic_javascript_checkers = ["eslint", "jscs"]
 
 " open quicfix window with all error found
 nmap <silent> <leader>ll :Errors<cr>
@@ -507,14 +530,13 @@ call arpeggio#map('i', '', 0, 'jk', '<ESC>')
 "--------------------------------------------------
 " Colorscheme
 
-" Use solarized colorscheme
-colorscheme solarized
+colorscheme monokai
 
 " Setting up light color scheme
-set background=light
+set background=dark
 
 " set highlighting for colorcolumn
-highlight ColorColumn ctermbg=lightGrey
+highlight ColorColumn ctermbg=darkGrey
 
 "--------------------------------------------------
 " General options
@@ -651,14 +673,14 @@ set expandtab
 set smarttab
 
 " number of spaces to use for each step of indent
-set shiftwidth=4
+set shiftwidth=2
 
 " Number of spaces that a Tab in the file counts for
-set tabstop=4
+set tabstop=2
 
 " Same but for editing operation (not shure what exactly does it means)
 " but in most cases tabstop and softtabstop better be the same
-set softtabstop=4
+set softtabstop=2
 
 " Round indent to multiple of 'shiftwidth'.
 " Indentation always be multiple of shiftwidth
