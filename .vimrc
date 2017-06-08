@@ -45,11 +45,16 @@ if executable('ag')
 endif
 
 nnoremap K :grep! --word-regexp "<C-R><C-W>"<CR>:cw<CR>
-nnoremap \ :Ag<SPACE>
-
+nnoremap <silent><C-t> :Ag<space>
+nnoremap ; :
+nnoremap <C-\> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeFind<CR>
 
 "--------------------------------------------------
 " Bundles
+
+" es6 snippets
+NeoBundle 'isRuslan/vim-es6'
 
 " Let NeoNeoBundle manage NeoNeoBundle
 NeoBundle 'Shougo/neobundle.vim'
@@ -62,6 +67,10 @@ NeoBundle 'Shougo/vimproc', {
 \     'unix': g:make
 \    },
 \ }
+
+NeoBundle 'morhetz/gruvbox'
+
+NeoBundle 'lambdatoast/elm.vim'
 
 " Some support functions used by delimitmate, and snipmate
 NeoBundle 'vim-scripts/tlib'
@@ -211,9 +220,6 @@ NeoBundle 'kana/vim-arpeggio'
 " Slim template engine
 NeoBundle 'slim-template/vim-slim'
 
-NeoBundle 'jistr/vim-nerdtree-tabs'
-
-map <C-\> <plug>NERDTreeTabsToggle<CR>
 
 " JShint :)
 " But not necessary with syntastics
@@ -440,7 +446,7 @@ imap <expr><CR> neosnippet#expandable_or_jumpable() ?
 " vim-airline
 
 " Colorscheme for airline
-let g:airline_theme='understated'
+let g:airline_theme='gruvbox'
 
 " Set custom left separator
 let g:airline_left_sep = '▶'
@@ -530,7 +536,7 @@ call arpeggio#map('i', '', 0, 'jk', '<ESC>')
 "--------------------------------------------------
 " Colorscheme
 
-colorscheme monokai
+colorscheme gruvbox
 
 " Setting up light color scheme
 set background=dark
@@ -788,6 +794,10 @@ vmap <leader>s :s//<left>
 " Moving between splits
 nmap <leader>w <C-w>w
 
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 "--------------------------------------------------
 " Aautocmd
 
